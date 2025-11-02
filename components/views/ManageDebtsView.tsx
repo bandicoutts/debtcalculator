@@ -26,6 +26,7 @@ export function ManageDebtsView({ debts, onAddDebt, onUpdateDebt, onDeleteDebt }
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [editingDebt, setEditingDebt] = useState<Debt | null>(null)
   const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; name: string } | null>(null)
+  const [showMobileForm, setShowMobileForm] = useState(false)
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
@@ -99,6 +100,7 @@ export function ManageDebtsView({ debts, onAddDebt, onUpdateDebt, onDeleteDebt }
       apr: debt.apr.toString()
     })
     setErrors({})
+    setShowMobileForm(true) // Open form on mobile
   }
 
   const handleCancelEdit = () => {
@@ -110,6 +112,7 @@ export function ManageDebtsView({ debts, onAddDebt, onUpdateDebt, onDeleteDebt }
       apr: ''
     })
     setErrors({})
+    setShowMobileForm(false) // Close form on mobile
   }
 
   const handleDelete = (id: string, name: string) => {
@@ -131,15 +134,29 @@ export function ManageDebtsView({ debts, onAddDebt, onUpdateDebt, onDeleteDebt }
       apr: debt.apr.toString()
     })
     setErrors({})
-    // Scroll to form
+    setShowMobileForm(true) // Open form on mobile
+    // Scroll to form on desktop
     window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
-    <div className="flex h-full">
+    <div className="flex flex-col lg:flex-row h-full">
       {/* Main Content */}
-      <div className="flex-1 p-10">
-        <h1 className="text-4xl font-light text-white mb-8">My Debts</h1>
+      <div className="flex-1 p-4 md:p-6 lg:p-10">
+        <div className="flex items-center justify-between mb-6 lg:mb-8">
+          <h1 className="text-3xl md:text-4xl font-light text-white">My Debts</h1>
+          {/* Mobile Add Button */}
+          <button
+            onClick={() => {
+              setEditingDebt(null)
+              setFormData({ name: '', balance: '', minimum_payment: '', apr: '' })
+              setShowMobileForm(true)
+            }}
+            className="lg:hidden px-4 py-2 bg-teal-600 text-white rounded-lg text-sm font-medium hover:bg-teal-700 transition-colors"
+          >
+            Add Debt
+          </button>
+        </div>
 
         <Card>
           <div className="overflow-x-auto">
@@ -214,8 +231,8 @@ export function ManageDebtsView({ debts, onAddDebt, onUpdateDebt, onDeleteDebt }
         </Card>
       </div>
 
-      {/* Add/Edit Debt Sidebar */}
-      <div className="w-96 border-l border-border-dark bg-surface-dark/30 p-8">
+      {/* Add/Edit Debt Sidebar - Desktop */}
+      <div className="hidden lg:block w-96 border-l border-border-dark bg-surface-dark/30 p-8">
         <div className="sticky top-10">
           <h2 className="text-xl font-medium text-white mb-2">
             {editingDebt ? 'Edit Debt' : 'Add a New Debt'}
@@ -320,6 +337,123 @@ export function ManageDebtsView({ debts, onAddDebt, onUpdateDebt, onDeleteDebt }
           </form>
         </div>
       </div>
+
+      {/* Mobile Form Modal */}
+      {showMobileForm && (
+        <div className="lg:hidden fixed inset-0 z-50 bg-black/50 flex items-end">
+          <div className="bg-surface-dark w-full max-h-[90vh] overflow-y-auto rounded-t-2xl p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-xl font-medium text-white">
+                {editingDebt ? 'Edit Debt' : 'Add a New Debt'}
+              </h2>
+              <button
+                onClick={handleCancelEdit}
+                className="text-gray-400 hover:text-white"
+                aria-label="Close form"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            {editingDebt && (
+              <p className="text-sm text-teal-500 mb-4">
+                Currently editing: {editingDebt.name}
+              </p>
+            )}
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <Input
+                label="Debt Name"
+                placeholder="e.g., Visa Credit Card"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                error={errors.name}
+              />
+
+              <div>
+                <label className="block text-sm font-medium text-gray-400 mb-2">Current Balance</label>
+                <div className="relative">
+                  <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">$</span>
+                  <input
+                    type="number"
+                    step="0.01"
+                    placeholder="12,500.00"
+                    value={formData.balance}
+                    onChange={(e) => setFormData({ ...formData, balance: e.target.value })}
+                    className={`
+                      w-full pl-7 rounded-lg bg-surface-darker border px-3 py-2.5 text-gray-200
+                      focus:outline-none focus:ring-2 focus:ring-teal-500
+                      ${errors.balance ? 'border-red-500' : 'border-border-dark'}
+                    `}
+                  />
+                </div>
+                {errors.balance && <p className="text-sm text-red-500 mt-1">{errors.balance}</p>}
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-2">Min. Payment</label>
+                  <div className="relative">
+                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">$</span>
+                    <input
+                      type="number"
+                      step="0.01"
+                      placeholder="250.00"
+                      value={formData.minimum_payment}
+                      onChange={(e) => setFormData({ ...formData, minimum_payment: e.target.value })}
+                      className={`
+                        w-full pl-7 rounded-lg bg-surface-darker border px-3 py-2.5 text-gray-200
+                        focus:outline-none focus:ring-2 focus:ring-teal-500
+                        ${errors.minimum_payment ? 'border-red-500' : 'border-border-dark'}
+                      `}
+                    />
+                  </div>
+                  {errors.minimum_payment && <p className="text-sm text-red-500 mt-1">{errors.minimum_payment}</p>}
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-400 mb-2">APR</label>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      step="0.01"
+                      placeholder="21.99"
+                      value={formData.apr}
+                      onChange={(e) => setFormData({ ...formData, apr: e.target.value })}
+                      className={`
+                        w-full pr-7 rounded-lg bg-surface-darker border px-3 py-2.5 text-gray-200
+                        focus:outline-none focus:ring-2 focus:ring-teal-500
+                        ${errors.apr && !errors.apr.includes('Warning') ? 'border-red-500' : errors.apr ? 'border-orange-500' : 'border-border-dark'}
+                      `}
+                    />
+                    <span className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-500">%</span>
+                  </div>
+                  {errors.apr && (
+                    <p className={`text-sm mt-1 ${errors.apr.includes('Warning') ? 'text-orange-500' : 'text-red-500'}`}>
+                      {errors.apr}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="flex gap-3">
+                <Button
+                  type="button"
+                  onClick={handleCancelEdit}
+                  variant="secondary"
+                  className="flex-1"
+                  size="lg"
+                >
+                  Cancel
+                </Button>
+                <Button type="submit" className="flex-1" size="lg">
+                  {editingDebt ? 'Update Debt' : 'Add Debt'}
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
 
       {/* Delete Confirmation Dialog */}
       <ConfirmDialog

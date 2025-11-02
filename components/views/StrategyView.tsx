@@ -144,58 +144,58 @@ export function StrategyView({ debts, extraPayment, onUpdateExtraPayment }: Stra
   const displayedPayments = showAllMonths ? filteredPayments : filteredPayments.slice(0, 20)
 
   return (
-    <div className="p-10">
-      <h1 className="text-4xl font-light text-white mb-8">My Strategy</h1>
+    <div className="p-4 md:p-6 lg:p-10">
+      <h1 className="text-3xl md:text-4xl font-light text-white mb-6 md:mb-8">My Strategy</h1>
 
       {/* Hero Stats */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 mb-6 md:mb-8">
         <Card>
           <div className="flex items-start justify-between">
-            <div>
+            <div className="flex-1 min-w-0">
               <p className="text-sm text-gray-400 mb-1">Total Debt</p>
-              <p className="text-3xl font-semibold text-white">{formatCurrency(heroStats.totalDebt)}</p>
+              <p className="text-2xl md:text-3xl font-semibold text-white truncate">{formatCurrency(heroStats.totalDebt)}</p>
             </div>
-            <div className="p-2 bg-red-500/10 rounded-lg">
-              <DollarSign className="w-6 h-6 text-red-500" />
+            <div className="p-2 bg-red-500/10 rounded-lg flex-shrink-0">
+              <DollarSign className="w-5 h-5 md:w-6 md:h-6 text-red-500" />
             </div>
           </div>
         </Card>
 
         <Card>
           <div className="flex items-start justify-between">
-            <div>
+            <div className="flex-1 min-w-0">
               <p className="text-sm text-gray-400 mb-1">Debt-Free Date</p>
-              <p className="text-3xl font-semibold text-white">
+              <p className="text-xl md:text-2xl lg:text-3xl font-semibold text-white">
                 {getPayoffDate(heroStats.debtFreeDate)}
               </p>
               <p className="text-xs text-gray-500 mt-1">
                 {Math.floor(heroStats.debtFreeDate / 12)} years, {heroStats.debtFreeDate % 12} months
               </p>
             </div>
-            <div className="p-2 bg-teal-500/10 rounded-lg">
-              <Calendar className="w-6 h-6 text-teal-500" />
+            <div className="p-2 bg-teal-500/10 rounded-lg flex-shrink-0">
+              <Calendar className="w-5 h-5 md:w-6 md:h-6 text-teal-500" />
             </div>
           </div>
         </Card>
 
         <Card>
           <div className="flex items-start justify-between">
-            <div>
+            <div className="flex-1 min-w-0">
               <p className="text-sm text-gray-400 mb-1">Monthly Payment</p>
-              <p className="text-3xl font-semibold text-white">{formatCurrency(heroStats.monthlyPayment)}</p>
-              <p className="text-xs text-gray-500 mt-1">
-                {formatCurrency(heroStats.totalMinimum)} minimum + {formatCurrency(extraPayment)} extra
+              <p className="text-2xl md:text-3xl font-semibold text-white truncate">{formatCurrency(heroStats.monthlyPayment)}</p>
+              <p className="text-xs text-gray-500 mt-1 truncate">
+                {formatCurrency(heroStats.totalMinimum)} min + {formatCurrency(extraPayment)} extra
               </p>
             </div>
-            <div className="p-2 bg-blue-500/10 rounded-lg">
-              <TrendingDown className="w-6 h-6 text-blue-500" />
+            <div className="p-2 bg-blue-500/10 rounded-lg flex-shrink-0">
+              <TrendingDown className="w-5 h-5 md:w-6 md:h-6 text-blue-500" />
             </div>
           </div>
         </Card>
       </div>
 
       {/* Extra Payment Card */}
-      <Card className="mb-8 border-teal-500/30">
+      <Card className="mb-6 md:mb-8 border-teal-500/30">
         <div className="flex items-start gap-4">
           <div className="p-2 bg-teal-500/10 rounded-lg">
             <Plus className="w-6 h-6 text-teal-500" />
@@ -205,8 +205,8 @@ export function StrategyView({ debts, extraPayment, onUpdateExtraPayment }: Stra
             <p className="text-gray-400 text-sm mb-4">
               Add extra money each month to pay off your debts faster and save on interest.
             </p>
-            <div className="flex items-center gap-3">
-              <div className="relative flex-1 max-w-xs">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3">
+              <div className="relative w-full sm:flex-1 sm:max-w-xs">
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">$</span>
                 <input
                   type="number"
@@ -226,7 +226,7 @@ export function StrategyView({ debts, extraPayment, onUpdateExtraPayment }: Stra
             </div>
             {savings && savings.method !== 'same' && (
               <p className="text-sm text-teal-500 mt-2">
-                💡 Using the {savings.method === 'avalanche' ? 'Avalanche' : 'Snowball'} method {savings.message}
+                💡 The {savings.method === 'avalanche' ? 'Avalanche' : 'Snowball'} method is recommended - it {savings.message}
                 {savings.months && ` and is ${savings.months}`}
               </p>
             )}
@@ -236,7 +236,7 @@ export function StrategyView({ debts, extraPayment, onUpdateExtraPayment }: Stra
 
       {/* High APR Warning */}
       {heroStats.highAPRDebts.length > 0 && (
-        <Card className="mb-8 border-orange-500/30">
+        <Card className="mb-6 md:mb-8 border-orange-500/30">
           <div className="flex items-start gap-4">
             <div className="p-2 bg-orange-500/10 rounded-lg">
               <AlertCircle className="w-6 h-6 text-orange-500" />
@@ -260,12 +260,12 @@ export function StrategyView({ debts, extraPayment, onUpdateExtraPayment }: Stra
       )}
 
       {/* Method Toggle */}
-      <div className="flex justify-center mb-8">
-        <div className="inline-flex rounded-lg bg-surface-darker p-1">
+      <div className="flex justify-center mb-6 md:mb-8">
+        <div className="inline-flex rounded-lg bg-surface-darker p-1 w-full sm:w-auto">
           <button
             onClick={() => setSelectedMethod('snowball')}
             className={`
-              px-8 py-2 rounded-md text-sm font-medium transition-colors relative
+              flex-1 sm:flex-none px-6 sm:px-8 py-2 rounded-md text-sm font-medium transition-colors relative
               ${selectedMethod === 'snowball'
                 ? 'bg-surface-dark text-white shadow-sm'
                 : 'text-gray-400 hover:text-gray-300'
@@ -280,7 +280,7 @@ export function StrategyView({ debts, extraPayment, onUpdateExtraPayment }: Stra
           <button
             onClick={() => setSelectedMethod('avalanche')}
             className={`
-              px-8 py-2 rounded-md text-sm font-medium transition-colors relative
+              flex-1 sm:flex-none px-6 sm:px-8 py-2 rounded-md text-sm font-medium transition-colors relative
               ${selectedMethod === 'avalanche'
                 ? 'bg-surface-dark text-white shadow-sm'
                 : 'text-gray-400 hover:text-gray-300'
@@ -295,117 +295,108 @@ export function StrategyView({ debts, extraPayment, onUpdateExtraPayment }: Stra
         </div>
       </div>
 
-      {/* Comparison Grid */}
-      <Card className="mb-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <h3 className="text-lg font-bold text-white">Snowball Method</h3>
-              <Info className="w-4 h-4 text-gray-500" />
-            </div>
-            <p className="text-sm text-gray-400">
-              Pay off smallest debts first for quick psychological wins and momentum.
+      {/* Method Information Card */}
+      <Card className="mb-6 md:mb-8">
+        <div className="mb-6">
+          <div className="flex items-center gap-2 mb-2">
+            <h3 className="text-lg font-bold text-white">
+              {selectedMethod === 'snowball' ? 'Snowball Method' : 'Avalanche Method'}
+            </h3>
+            <Info className="w-4 h-4 text-gray-500" />
+          </div>
+          <p className="text-sm text-gray-400">
+            {selectedMethod === 'snowball'
+              ? 'Pay off smallest debts first for quick psychological wins and momentum.'
+              : 'Pay off highest-interest debts first to minimize total interest paid.'}
+          </p>
+        </div>
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="flex flex-col gap-1 border-t border-border-dark pt-4">
+            <p className="text-sm text-gray-400">Payoff Date</p>
+            <p className="text-base font-medium text-white">{getPayoffDate(selectedStrategy.monthsToPayoff)}</p>
+          </div>
+
+          <div className="flex flex-col gap-1 border-t border-border-dark pt-4">
+            <p className="text-sm text-gray-400">Total Interest</p>
+            <p className="text-base font-medium text-white">{formatCurrency(selectedStrategy.totalInterestPaid)}</p>
+          </div>
+
+          <div className="flex flex-col gap-1 border-t border-border-dark pt-4">
+            <p className="text-sm text-gray-400">Total Paid</p>
+            <p className="text-base font-medium text-white">
+              {formatCurrency(heroStats.totalDebt + selectedStrategy.totalInterestPaid)}
             </p>
           </div>
-          <div>
-            <div className="flex items-center gap-2 mb-2">
-              <h3 className="text-lg font-bold text-white">Avalanche Method</h3>
-              <Info className="w-4 h-4 text-gray-500" />
-            </div>
-            <p className="text-sm text-gray-400">
-              Pay off highest-interest debts first to minimize total interest paid.
+
+          <div className="flex flex-col gap-1 border-t border-border-dark pt-4">
+            <p className="text-sm text-gray-400">Time to Freedom</p>
+            <p className="text-base font-medium text-white">
+              {Math.floor(selectedStrategy.monthsToPayoff / 12)}y, {selectedStrategy.monthsToPayoff % 12}m
             </p>
           </div>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
-          {/* Snowball Stats */}
-          <div className="flex flex-col gap-1 border-t border-border-dark py-4">
-            <p className="text-sm text-gray-400">Payoff Date</p>
-            <p className="text-base font-medium text-white">{getPayoffDate(snowball.monthsToPayoff)}</p>
-          </div>
-          <div className="flex flex-col gap-1 border-t border-border-dark py-4">
-            <p className="text-sm text-gray-400">Payoff Date</p>
-            <p className="text-base font-medium text-white">{getPayoffDate(avalanche.monthsToPayoff)}</p>
-          </div>
-
-          <div className="flex flex-col gap-1 border-t border-border-dark py-4">
-            <p className="text-sm text-gray-400">Total Interest Paid</p>
-            <p className="text-base font-medium text-white">{formatCurrency(snowball.totalInterestPaid)}</p>
-          </div>
-          <div className="flex flex-col gap-1 border-t border-border-dark py-4">
-            <p className="text-sm text-gray-400">Total Interest Paid</p>
-            <p className="text-base font-medium text-white">{formatCurrency(avalanche.totalInterestPaid)}</p>
-          </div>
-
-          <div className="flex flex-col gap-1 border-t border-border-dark py-4">
-            <p className="text-sm text-gray-400">Total Paid</p>
-            <p className="text-base font-medium text-white">
-              {formatCurrency(heroStats.totalDebt + snowball.totalInterestPaid)}
+        {/* Comparison Note */}
+        {savings && savings.method !== 'same' && (
+          <div className="mt-6 p-4 bg-teal-500/10 border border-teal-500/30 rounded-lg">
+            <p className="text-sm text-teal-400">
+              {selectedMethod === savings.method ? (
+                <>
+                  ✨ <strong>Recommended:</strong> This method {savings.message}
+                  {savings.months && ` and is ${savings.months}`}
+                </>
+              ) : (
+                <>
+                  💡 <strong>Note:</strong> The {savings.method} method {savings.message}
+                  {savings.months && ` and is ${savings.months}`}
+                </>
+              )}
             </p>
           </div>
-          <div className="flex flex-col gap-1 border-t border-border-dark py-4">
-            <p className="text-sm text-gray-400">Total Paid</p>
-            <p className="text-base font-medium text-white">
-              {formatCurrency(heroStats.totalDebt + avalanche.totalInterestPaid)}
-            </p>
-          </div>
-
-          <div className="flex flex-col gap-1 border-t border-border-dark py-4">
-            <p className="text-sm text-gray-400">Time to Freedom</p>
-            <p className="text-base font-medium text-white">
-              {Math.floor(snowball.monthsToPayoff / 12)} years, {snowball.monthsToPayoff % 12} months
-            </p>
-          </div>
-          <div className="flex flex-col gap-1 border-t border-border-dark py-4">
-            <p className="text-sm text-gray-400">Time to Freedom</p>
-            <p className="text-base font-medium text-white">
-              {Math.floor(avalanche.monthsToPayoff / 12)} years, {avalanche.monthsToPayoff % 12} months
-            </p>
-          </div>
-        </div>
+        )}
       </Card>
 
       {/* Debt Payoff Flow */}
-      <Card className="mb-8">
+      <Card className="mb-6 md:mb-8">
         <div className="mb-4">
           <h3 className="text-base font-bold text-white">Debt Payoff Order</h3>
           <p className="text-sm text-gray-400">The order your debts will be paid off using the {selectedMethod} method.</p>
         </div>
-        <div className="flex items-center justify-center gap-2 sm:gap-4 overflow-x-auto p-4">
+        <div className="flex items-center justify-center lg:justify-between gap-2 sm:gap-4 lg:gap-6 overflow-x-auto p-2 sm:p-4 -mx-2 sm:mx-0">
           {payoffOrder.map((debt, index) => {
             const Icon = debt.icon
             return (
-              <div key={debt.debtId} className="flex items-center">
-                <div className="flex flex-col items-center gap-2 text-center">
-                  <div className={`flex size-14 items-center justify-center rounded-full border-2 ${
+              <div key={debt.debtId} className="flex items-center flex-shrink-0 lg:flex-1 lg:justify-center">
+                <div className="flex flex-col items-center gap-1 sm:gap-2 text-center min-w-[80px] lg:min-w-[120px]">
+                  <div className={`flex size-12 sm:size-14 lg:size-16 items-center justify-center rounded-full border-2 ${
                     index === 0 ? 'border-teal-500 bg-teal-500/10 text-teal-500' : 'border-gray-600 bg-gray-800/50 text-gray-500'
                   }`}>
-                    <Icon className="w-7 h-7" />
+                    <Icon className="w-5 h-5 sm:w-7 sm:h-7 lg:w-8 lg:h-8" />
                   </div>
-                  <p className={`text-sm font-medium ${index === 0 ? 'text-white' : 'text-gray-500'}`}>
+                  <p className={`text-xs sm:text-sm font-medium truncate max-w-[80px] lg:max-w-[120px] ${index === 0 ? 'text-white' : 'text-gray-500'}`}>
                     {debt.debtName}
                   </p>
                   <p className="text-xs text-gray-500">{formatCurrency(debt.balance)}</p>
                 </div>
                 {index < payoffOrder.length && (
-                  <div className="h-px w-8 flex-shrink-0 bg-gray-700 mx-2"></div>
+                  <div className="h-px w-6 sm:w-8 lg:flex-1 lg:min-w-[40px] lg:max-w-[100px] flex-shrink-0 bg-gray-700 mx-1 sm:mx-2"></div>
                 )}
               </div>
             )
           })}
-          <div className="flex flex-col items-center gap-2 text-center">
-            <div className="flex size-14 items-center justify-center rounded-full border-2 border-gray-600 bg-gray-800/50 text-gray-500">
-              <PartyPopper className="w-7 h-7" />
+          <div className="flex flex-col items-center gap-1 sm:gap-2 text-center flex-shrink-0 min-w-[80px] lg:min-w-[120px]">
+            <div className="flex size-12 sm:size-14 lg:size-16 items-center justify-center rounded-full border-2 border-gray-600 bg-gray-800/50 text-gray-500">
+              <PartyPopper className="w-5 h-5 sm:w-7 sm:h-7 lg:w-8 lg:h-8" />
             </div>
-            <p className="text-sm font-medium text-gray-500">Debt Free!</p>
-            <p className="text-xs text-gray-500">{getPayoffDate(selectedStrategy.monthsToPayoff)}</p>
+            <p className="text-xs sm:text-sm font-medium text-gray-500">Debt Free!</p>
+            <p className="text-xs text-gray-500 hidden sm:block">{getPayoffDate(selectedStrategy.monthsToPayoff)}</p>
           </div>
         </div>
       </Card>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6 mb-6 md:mb-8">
         <Card>
           <div className="mb-4">
             <h3 className="text-base font-bold text-white">Debt Balance Over Time</h3>
