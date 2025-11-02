@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { formatCurrency } from '@/lib/formatters'
-import { Pencil, Trash2, Copy } from 'lucide-react'
+import { Pencil, Trash2, CopyPlus, X } from 'lucide-react'
 
 interface ManageDebtsViewProps {
   debts: Debt[]
@@ -202,7 +202,7 @@ export function ManageDebtsView({ debts, onAddDebt, onUpdateDebt, onDeleteDebt }
                             aria-label={`Duplicate ${debt.name}`}
                             title="Duplicate"
                           >
-                            <Copy className="w-5 h-5" />
+                            <CopyPlus className="w-5 h-5" />
                           </button>
                           <button
                             onClick={() => handleEdit(debt)}

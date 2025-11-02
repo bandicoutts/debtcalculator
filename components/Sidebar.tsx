@@ -44,13 +44,22 @@ export function Sidebar({ currentView, onViewChange, debtCount, onLogout }: Side
         <Infinity className="text-teal-500 w-8 h-8" strokeWidth={2} />
         <h1 className="text-xl font-bold text-white">Snowball</h1>
       </div>
-      <button
-        onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        className="text-gray-400 hover:text-white transition-colors"
-        aria-label="Toggle menu"
-      >
-        {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-      </button>
+      <div className="flex items-center gap-2">
+        <button
+          onClick={handleLogoutClick}
+          className="text-gray-400 hover:text-white transition-colors p-2"
+          aria-label="Log out"
+        >
+          <LogOut className="w-5 h-5" />
+        </button>
+        <button
+          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+          className="text-gray-400 hover:text-white transition-colors"
+          aria-label="Toggle menu"
+        >
+          {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+        </button>
+      </div>
     </div>
 
     {/* Mobile Menu Overlay */}
@@ -90,7 +99,7 @@ export function Sidebar({ currentView, onViewChange, debtCount, onLogout }: Side
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 flex flex-col gap-2">
+      <nav className="flex flex-col gap-2">
         {navItems.map((item) => {
           const Icon = item.icon
           const isActive = currentView === item.id
@@ -121,10 +130,13 @@ export function Sidebar({ currentView, onViewChange, debtCount, onLogout }: Side
         })}
       </nav>
 
+      {/* Spacer to push logout to bottom */}
+      <div className="flex-1"></div>
+
       {/* Logout */}
       <button
         onClick={handleLogoutClick}
-        className="flex items-center gap-3 px-3 py-2 text-gray-400 hover:bg-gray-800 hover:text-gray-300 rounded-lg transition-colors text-sm font-medium"
+        className="flex items-center gap-3 px-3 py-2 text-gray-400 hover:bg-gray-800 hover:text-gray-300 rounded-lg transition-colors text-sm font-medium mt-4"
         aria-label="Log out"
       >
         <LogOut className="w-5 h-5" />

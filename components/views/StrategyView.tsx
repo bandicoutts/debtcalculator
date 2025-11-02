@@ -86,6 +86,21 @@ export function StrategyView({ debts, extraPayment, onUpdateExtraPayment }: Stra
 
   const savings = calculateSavings()
 
+  // Debug logging
+  if (results) {
+    console.log('Comparison:', {
+      snowball: {
+        monthsToPayoff: results.snowball.monthsToPayoff,
+        totalInterestPaid: results.snowball.totalInterestPaid
+      },
+      avalanche: {
+        monthsToPayoff: results.avalanche.monthsToPayoff,
+        totalInterestPaid: results.avalanche.totalInterestPaid
+      },
+      savings
+    })
+  }
+
   if (debts.length === 0) {
     return (
       <div className="p-10">
@@ -261,36 +276,44 @@ export function StrategyView({ debts, extraPayment, onUpdateExtraPayment }: Stra
 
       {/* Method Toggle */}
       <div className="flex justify-center mb-6 md:mb-8">
-        <div className="inline-flex rounded-lg bg-surface-darker p-1 w-full sm:w-auto">
+        <div className="inline-flex flex-col sm:flex-row rounded-lg bg-surface-darker p-1 w-full sm:w-auto gap-1 sm:gap-0">
           <button
             onClick={() => setSelectedMethod('snowball')}
             className={`
-              flex-1 sm:flex-none px-6 sm:px-8 py-2 rounded-md text-sm font-medium transition-colors relative
+              flex-1 sm:flex-none px-6 sm:px-8 py-3 sm:py-2 rounded-md text-sm font-medium transition-colors relative
               ${selectedMethod === 'snowball'
                 ? 'bg-surface-dark text-white shadow-sm'
                 : 'text-gray-400 hover:text-gray-300'
               }
             `}
           >
-            Snowball
-            {savings?.method === 'snowball' && savings.method !== 'same' && (
-              <span className="absolute -top-2 -right-2 text-xs">✨</span>
-            )}
+            <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
+              <span>Snowball</span>
+              {savings?.method === 'snowball' && savings.method !== 'same' && (
+                <span className="text-xs bg-teal-500/30 text-teal-300 px-2.5 py-1 rounded-full font-semibold border border-teal-500/40">
+                  Recommended
+                </span>
+              )}
+            </div>
           </button>
           <button
             onClick={() => setSelectedMethod('avalanche')}
             className={`
-              flex-1 sm:flex-none px-6 sm:px-8 py-2 rounded-md text-sm font-medium transition-colors relative
+              flex-1 sm:flex-none px-6 sm:px-8 py-3 sm:py-2 rounded-md text-sm font-medium transition-colors relative
               ${selectedMethod === 'avalanche'
                 ? 'bg-surface-dark text-white shadow-sm'
                 : 'text-gray-400 hover:text-gray-300'
               }
             `}
           >
-            Avalanche
-            {savings?.method === 'avalanche' && savings.method !== 'same' && (
-              <span className="absolute -top-2 -right-2 text-xs">✨</span>
-            )}
+            <div className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2">
+              <span>Avalanche</span>
+              {savings?.method === 'avalanche' && savings.method !== 'same' && (
+                <span className="text-xs bg-teal-500/30 text-teal-300 px-2.5 py-1 rounded-full font-semibold border border-teal-500/40">
+                  Recommended
+                </span>
+              )}
+            </div>
           </button>
         </div>
       </div>
