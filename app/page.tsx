@@ -1,19 +1,19 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import toast from 'react-hot-toast'
 import { createClient } from '@/lib/supabase'
 import { Debt, UserSettings } from '@/types/debt.types'
 import { Sidebar, View } from '@/components/Sidebar'
-import { DashboardView } from '@/components/views/DashboardView'
+import { StrategyView } from '@/components/views/StrategyView'
 import { ManageDebtsView } from '@/components/views/ManageDebtsView'
-import { ResultsView } from '@/components/views/ResultsView'
 import { AuthView } from '@/components/views/AuthView'
 import { User } from '@supabase/supabase-js'
 
 export default function Home() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
-  const [currentView, setCurrentView] = useState<View>('dashboard')
+  const [currentView, setCurrentView] = useState<View>('strategy')
   const [debts, setDebts] = useState<Debt[]>([])
   const [extraPayment, setExtraPayment] = useState(0)
 
@@ -139,75 +139,92 @@ export default function Home() {
     setUser(null)
     setDebts([])
     setExtraPayment(0)
-    setCurrentView('dashboard')
+    setCurrentView('strategy')
   }
 
   const handleAddDebt = async (debtData: Omit<Debt, 'id'>) => {
     if (!user) return
 
-    const { data, error } = await supabase
-      .from('debts')
-      .insert({
-        user_id: user.id,
-        ...debtData
-      })
-      .select()
-      .single()
+    const loadingToast = toast.loading('Adding debt...')
 
-    if (error) {
+    try {
+      const { data, error } = await supabase
+        .from('debts')
+        .insert({
+          user_id: user.id,
+          ...debtData
+        })
+        .select()
+        .single()
+
+      if (error) throw error
+
+      setDebts([...debts, data])
+      toast.success(`${debtData.name} added successfully`, { id: loadingToast })
+    } catch (error) {
       console.error('Error adding debt:', error)
-      alert('Failed to add debt. Please try again.')
-      return
+      toast.error('Failed to add debt. Please try again.', { id: loadingToast })
     }
-
-    setDebts([...debts, data])
   }
 
   const handleUpdateDebt = async (id: string, updates: Partial<Debt>) => {
-    const { error } = await supabase
-      .from('debts')
-      .update(updates)
-      .eq('id', id)
+    const loadingToast = toast.loading('Updating debt...')
 
-    if (error) {
+    try {
+      const { error } = await supabase
+        .from('debts')
+        .update(updates)
+        .eq('id', id)
+
+      if (error) throw error
+
+      setDebts(debts.map(debt => debt.id === id ? { ...debt, ...updates } : debt))
+      toast.success('Debt updated successfully', { id: loadingToast })
+    } catch (error) {
       console.error('Error updating debt:', error)
-      alert('Failed to update debt. Please try again.')
-      return
+      toast.error('Failed to update debt. Please try again.', { id: loadingToast })
     }
-
-    setDebts(debts.map(debt => debt.id === id ? { ...debt, ...updates } : debt))
   }
 
   const handleDeleteDebt = async (id: string) => {
-    const { error } = await supabase
-      .from('debts')
-      .delete()
-      .eq('id', id)
+    const debt = debts.find(d => d.id === id)
+    const loadingToast = toast.loading('Deleting debt...')
 
-    if (error) {
+    try {
+      const { error } = await supabase
+        .from('debts')
+        .delete()
+        .eq('id', id)
+
+      if (error) throw error
+
+      setDebts(debts.filter(debt => debt.id !== id))
+      toast.success(`${debt?.name || 'Debt'} deleted successfully`, { id: loadingToast })
+    } catch (error) {
       console.error('Error deleting debt:', error)
-      alert('Failed to delete debt. Please try again.')
-      return
+      toast.error('Failed to delete debt. Please try again.', { id: loadingToast })
     }
-
-    setDebts(debts.filter(debt => debt.id !== id))
   }
 
   const handleUpdateExtraPayment = async (amount: number) => {
     if (!user) return
 
-    const { error } = await supabase
-      .from('user_settings')
-      .update({ extra_payment: amount })
-      .eq('user_id', user.id)
+    const loadingToast = toast.loading('Saving...')
 
-    if (error) {
+    try {
+      const { error } = await supabase
+        .from('user_settings')
+        .update({ extra_payment: amount })
+        .eq('user_id', user.id)
+
+      if (error) throw error
+
+      setExtraPayment(amount)
+      toast.success('Extra payment saved', { id: loadingToast })
+    } catch (error) {
       console.error('Error updating extra payment:', error)
-      alert('Failed to update extra payment. Please try again.')
-      return
+      toast.error('Failed to save extra payment. Please try again.', { id: loadingToast })
     }
-
-    setExtraPayment(amount)
   }
 
   if (loading) {
@@ -231,9 +248,9 @@ export default function Home() {
         onLogout={handleLogout}
       />
 
-      <main className="flex-1 overflow-y-auto">
-        {currentView === 'dashboard' && (
-          <DashboardView
+      <main className="flex-1 overflow-y-auto pt-16 lg:pt-0">
+        {currentView === 'strategy' && (
+          <StrategyView
             debts={debts}
             extraPayment={extraPayment}
             onUpdateExtraPayment={handleUpdateExtraPayment}
@@ -246,9 +263,6 @@ export default function Home() {
             onUpdateDebt={handleUpdateDebt}
             onDeleteDebt={handleDeleteDebt}
           />
-        )}
-        {currentView === 'results' && (
-          <ResultsView debts={debts} extraPayment={extraPayment} />
         )}
       </main>
     </div>

@@ -5,8 +5,9 @@ import { Debt } from '@/types/debt.types'
 import { Card } from '@/components/ui/Card'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 import { formatCurrency } from '@/lib/formatters'
-import { Pencil, Trash2 } from 'lucide-react'
+import { Pencil, Trash2, Copy } from 'lucide-react'
 
 interface ManageDebtsViewProps {
   debts: Debt[]
@@ -24,6 +25,7 @@ export function ManageDebtsView({ debts, onAddDebt, onUpdateDebt, onDeleteDebt }
   })
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [editingDebt, setEditingDebt] = useState<Debt | null>(null)
+  const [deleteConfirm, setDeleteConfirm] = useState<{ id: string; name: string } | null>(null)
 
   const validateForm = () => {
     const newErrors: Record<string, string> = {}
@@ -111,16 +113,33 @@ export function ManageDebtsView({ debts, onAddDebt, onUpdateDebt, onDeleteDebt }
   }
 
   const handleDelete = (id: string, name: string) => {
-    if (confirm(`Delete "${name}"? This cannot be undone.`)) {
-      onDeleteDebt(id)
+    setDeleteConfirm({ id, name })
+  }
+
+  const confirmDelete = () => {
+    if (deleteConfirm) {
+      onDeleteDebt(deleteConfirm.id)
+      setDeleteConfirm(null)
     }
+  }
+
+  const handleDuplicate = (debt: Debt) => {
+    setFormData({
+      name: `${debt.name} (Copy)`,
+      balance: debt.balance.toString(),
+      minimum_payment: debt.minimum_payment.toString(),
+      apr: debt.apr.toString()
+    })
+    setErrors({})
+    // Scroll to form
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   }
 
   return (
     <div className="flex h-full">
       {/* Main Content */}
       <div className="flex-1 p-10">
-        <h1 className="text-4xl font-light text-white mb-8">Manage Your Debts</h1>
+        <h1 className="text-4xl font-light text-white mb-8">My Debts</h1>
 
         <Card>
           <div className="overflow-x-auto">
@@ -143,22 +162,44 @@ export function ManageDebtsView({ debts, onAddDebt, onUpdateDebt, onDeleteDebt }
                   </tr>
                 ) : (
                   debts.map(debt => (
-                    <tr key={debt.id} className="border-t border-border-darker group">
-                      <td className="px-6 py-4 text-sm font-normal text-white">{debt.name}</td>
+                    <tr
+                      key={debt.id}
+                      className={`border-t border-border-darker group ${
+                        editingDebt?.id === debt.id ? 'bg-teal-500/5 border-l-4 border-l-teal-500' : ''
+                      }`}
+                    >
+                      <td className="px-6 py-4 text-sm font-normal text-white">
+                        {debt.name}
+                        {editingDebt?.id === debt.id && (
+                          <span className="ml-2 text-xs text-teal-500">(Editing)</span>
+                        )}
+                      </td>
                       <td className="px-6 py-4 text-sm font-normal text-gray-400">{formatCurrency(debt.balance)}</td>
                       <td className="px-6 py-4 text-sm font-normal text-gray-400">{debt.apr.toFixed(2)}%</td>
                       <td className="px-6 py-4 text-sm font-normal text-gray-400">{formatCurrency(debt.minimum_payment)}</td>
                       <td className="px-6 py-4 text-right">
-                        <div className="flex justify-end items-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="flex justify-end items-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <button
+                            onClick={() => handleDuplicate(debt)}
+                            className="text-gray-500 hover:text-blue-500 transition-colors"
+                            aria-label={`Duplicate ${debt.name}`}
+                            title="Duplicate"
+                          >
+                            <Copy className="w-5 h-5" />
+                          </button>
                           <button
                             onClick={() => handleEdit(debt)}
                             className="text-gray-500 hover:text-teal-500 transition-colors"
+                            aria-label={`Edit ${debt.name}`}
+                            title="Edit"
                           >
                             <Pencil className="w-5 h-5" />
                           </button>
                           <button
                             onClick={() => handleDelete(debt.id, debt.name)}
                             className="text-gray-500 hover:text-red-500 transition-colors"
+                            aria-label={`Delete ${debt.name}`}
+                            title="Delete"
                           >
                             <Trash2 className="w-5 h-5" />
                           </button>
@@ -176,9 +217,14 @@ export function ManageDebtsView({ debts, onAddDebt, onUpdateDebt, onDeleteDebt }
       {/* Add/Edit Debt Sidebar */}
       <div className="w-96 border-l border-border-dark bg-surface-dark/30 p-8">
         <div className="sticky top-10">
-          <h2 className="text-xl font-medium text-white mb-6">
+          <h2 className="text-xl font-medium text-white mb-2">
             {editingDebt ? 'Edit Debt' : 'Add a New Debt'}
           </h2>
+          {editingDebt && (
+            <p className="text-sm text-teal-500 mb-4">
+              Currently editing: {editingDebt.name}
+            </p>
+          )}
 
           <form onSubmit={handleSubmit} className="space-y-6">
             <Input
@@ -274,6 +320,18 @@ export function ManageDebtsView({ debts, onAddDebt, onUpdateDebt, onDeleteDebt }
           </form>
         </div>
       </div>
+
+      {/* Delete Confirmation Dialog */}
+      <ConfirmDialog
+        isOpen={deleteConfirm !== null}
+        onClose={() => setDeleteConfirm(null)}
+        onConfirm={confirmDelete}
+        title="Delete Debt"
+        message={`Are you sure you want to delete "${deleteConfirm?.name}"? This action cannot be undone.`}
+        confirmText="Delete"
+        cancelText="Cancel"
+        variant="danger"
+      />
     </div>
   )
 }
