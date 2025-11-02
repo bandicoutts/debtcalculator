@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Snowball - Strategy Comparison</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+        darkMode: "class",
+        theme: {
+            extend: {
+                colors: {
+                    "primary": "#fafafa",
+                    "background-light": "#f7f7f7",
+                    "background-dark": "#191919",
+                },
+                fontFamily: {
+                    "display": ["Inter", "sans-serif"]
+                },
+                borderRadius: {
+                    "DEFAULT": "0.5rem",
+                    "lg": "1rem",
+                    "xl": "1.5rem",
+                    "full": "9999px"
+                },
+            },
+        },
+    }
+</script>
+</head>
+<body class="font-display bg-background-light dark:bg-background-dark">
+<div class="relative flex h-auto min-h-screen w-full group/design-root overflow-x-hidden">
+<div class="flex min-h-screen w-full">
+<aside class="w-64 shrink-0 flex-col border-r border-white/10 dark:border-[#303030] bg-background-dark hidden md:flex">
+<div class="flex h-20 items-center gap-4 border-b border-white/10 dark:border-[#303030] px-6">
+<div class="size-8 text-primary">
+<svg fill="none" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#clip0_6_330)">
+<path clip-rule="evenodd" d="M24 0.757355L47.2426 24L24 47.2426L0.757355 24L24 0.757355ZM21 35.7574V12.2426L9.24264 24L21 35.7574Z" fill="currentColor" fill-rule="evenodd"></path>
+</g>
+<defs>
+<clipPath id="clip0_6_330">
+<rect fill="white" height="48" width="48"></rect>
+</clipPath>
+</defs>
+</svg>
+</div>
+<h2 class="text-primary text-xl font-bold tracking-[-0.015em]">Snowball</h2>
+</div>
+<nav class="flex flex-1 flex-col justify-between p-4">
+<div class="flex flex-col gap-2">
+<a class="flex items-center gap-3 rounded-lg px-4 py-2.5 text-primary/70 transition-colors hover:bg-white/10 hover:text-primary" href="#">
+<span class="material-symbols-outlined text-xl">grid_view</span>
+<span class="text-sm font-medium">Dashboard</span>
+</a>
+<a class="flex items-center justify-between rounded-lg bg-white/10 px-4 py-2.5 text-primary transition-colors hover:bg-white/10" href="#">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-xl">account_balance_wallet</span>
+<span class="text-sm font-medium">Debts</span>
+</div>
+<span class="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-xs font-semibold text-primary">4</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-4 py-2.5 text-primary/70 transition-colors hover:bg-white/10 hover:text-primary" href="#">
+<span class="material-symbols-outlined text-xl">bar_chart</span>
+<span class="text-sm font-medium">Results</span>
+</a>
+</div>
+<button class="flex w-full items-center gap-3 rounded-lg px-4 py-2.5 text-primary/70 transition-colors hover:bg-white/10 hover:text-primary">
+<span class="material-symbols-outlined text-xl">logout</span>
+<span class="text-sm font-medium">Logout</span>
+</button>
+</nav>
+</aside>
+<div class="flex flex-1 flex-col">
+<div class="flex flex-1 justify-center py-5">
+<div class="flex w-full max-w-5xl flex-col px-4 sm:px-6 md:px-8 lg:px-10">
+<header class="flex h-20 items-center justify-end whitespace-nowrap px-4 sm:px-0">
+<div class="flex items-center gap-4">
+<button class="flex cursor-pointer items-center justify-center rounded-xl h-10 w-10 bg-white/10 dark:bg-[#303030] text-primary min-w-0">
+<span class="material-symbols-outlined text-xl">notifications</span>
+</button>
+<button class="flex cursor-pointer items-center justify-center rounded-xl h-10 w-10 bg-white/10 dark:bg-[#303030] text-primary min-w-0">
+<span class="material-symbols-outlined text-xl">chat_bubble</span>
+</button>
+<div class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10" data-alt="User profile avatar" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA99-ojlbxV9R6bjSsCv2GWdLOg2N7pm6LEcT2DhKt_obydsMK8prHVJ6WZJd6MJmyc745B0HZuMoTN7AKKF1UbVpbMRh4CAQNv1Vs_F1FjnfaZ77cPcGokATls3qL2FPwUV87nXoXvJenPDzDk1sK69qTrk4T5lPlpjCEZQyXHikcc2u6w2rD4c18T4vRvwLdbwDuXVOt9hRqqmV80n3T6TVXtzhdUPFqgZ-yYaiDeyRpifLG2mi55Vg0F-eGPEbOH14ffQi1tfAfS");'></div>
+</div>
+</header>
+<main class="flex flex-col gap-6 mt-2">
+<div class="flex flex-wrap justify-between items-center gap-4 px-4 sm:px-0">
+<h1 class="text-primary text-4xl font-black leading-tight tracking-[-0.033em] min-w-72">Compare Your Payoff Strategies</h1>
+</div>
+<div class="flex px-4 sm:px-0 py-3">
+<div class="flex h-10 flex-1 items-center justify-center rounded-xl bg-white/10 dark:bg-[#303030] p-1 max-w-sm mx-auto">
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-background-dark has-[:checked]:shadow-sm has-[:checked]:text-primary text-primary/60 text-sm font-medium leading-normal transition-colors">
+<span class="truncate">Snowball</span>
+<input checked="" class="invisible w-0" name="strategy-toggle" type="radio" value="Snowball"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-background-dark has-[:checked]:shadow-sm has-[:checked]:text-primary text-primary/60 text-sm font-medium leading-normal transition-colors">
+<span class="truncate">Avalanche</span>
+<input class="invisible w-0" name="strategy-toggle" type="radio" value="Avalanche"/>
+</label>
+</div>
+</div>
+<div class="p-0 sm:p-4">
+<div class="flex flex-col gap-4 rounded-xl bg-white/5 dark:bg-[#212121] p-6 shadow-[0_0_4px_rgba(0,0,0,0.1)]">
+<div class="flex flex-col md:flex-row items-stretch justify-between gap-6">
+<div class="flex flex-col gap-1 flex-1">
+<div class="flex items-center gap-2">
+<p class="text-primary text-lg font-bold leading-tight">Snowball</p>
+<span class="material-symbols-outlined text-primary/50 text-base cursor-pointer">info</span>
+</div>
+<p class="text-primary/60 dark:text-[#ababab] text-sm font-normal leading-normal">Focuses on paying off the smallest debts first for quick wins.</p>
+</div>
+<div class="flex flex-col gap-1 flex-1">
+<div class="flex items-center gap-2">
+<p class="text-primary text-lg font-bold leading-tight">Avalanche</p>
+<span class="material-symbols-outlined text-primary/50 text-base cursor-pointer">info</span>
+</div>
+<p class="text-primary/60 dark:text-[#ababab] text-sm font-normal leading-normal">Focuses on paying off the highest-interest debts first to save money.</p>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-x-6">
+<div class="flex flex-col gap-1 border-t border-solid border-white/10 dark:border-t-[#474747] py-4">
+<p class="text-primary/60 dark:text-[#ababab] text-sm font-normal leading-normal">Payoff Date</p>
+<p class="text-primary text-base font-medium leading-normal">June 2028</p>
+</div>
+<div class="flex flex-col gap-1 border-t border-solid border-white/10 dark:border-t-[#474747] py-4">
+<p class="text-primary/60 dark:text-[#ababab] text-sm font-normal leading-normal">Payoff Date</p>
+<p class="text-primary text-base font-medium leading-normal">December 2027</p>
+</div>
+<div class="flex flex-col gap-1 border-t border-solid border-white/10 dark:border-t-[#474747] py-4">
+<p class="text-primary/60 dark:text-[#ababab] text-sm font-normal leading-normal">Total Interest Paid</p>
+<p class="text-primary text-base font-medium leading-normal">$8,450.12</p>
+</div>
+<div class="flex flex-col gap-1 border-t border-solid border-white/10 dark:border-t-[#474747] py-4">
+<p class="text-primary/60 dark:text-[#ababab] text-sm font-normal leading-normal">Total Interest Paid</p>
+<p class="text-primary text-base font-medium leading-normal">$7,230.55</p>
+</div>
+<div class="flex flex-col gap-1 border-t border-solid border-white/10 dark:border-t-[#474747] py-4">
+<p class="text-primary/60 dark:text-[#ababab] text-sm font-normal leading-normal">Total Paid</p>
+<p class="text-primary text-base font-medium leading-normal">$58,450.12</p>
+</div>
+<div class="flex flex-col gap-1 border-t border-solid border-white/10 dark:border-t-[#474747] py-4">
+<p class="text-primary/60 dark:text-[#ababab] text-sm font-normal leading-normal">Total Paid</p>
+<p class="text-primary text-base font-medium leading-normal">$57,230.55</p>
+</div>
+<div class="flex flex-col gap-1 border-t border-solid border-white/10 dark:border-t-[#474747] py-4">
+<p class="text-primary/60 dark:text-[#ababab] text-sm font-normal leading-normal">Time to Freedom</p>
+<p class="text-primary text-base font-medium leading-normal">4 years, 6 months</p>
+</div>
+<div class="flex flex-col gap-1 border-t border-solid border-white/10 dark:border-t-[#474747] py-4">
+<p class="text-primary/60 dark:text-[#ababab] text-sm font-normal leading-normal">Time to Freedom</p>
+<p class="text-primary text-base font-medium leading-normal">3 years, 11 months</p>
+</div>
+</div>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 p-0 sm:p-4">
+<div class="flex flex-col gap-4 rounded-xl bg-white/5 dark:bg-[#212121] p-6 shadow-[0_0_4px_rgba(0,0,0,0.1)]">
+<div class="flex flex-col">
+<p class="text-primary text-base font-bold leading-tight">Debt Balance Over Time</p>
+<p class="text-primary/60 dark:text-[#ababab] text-sm font-normal leading-normal">Total remaining debt balance projection.</p>
+</div>
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl" data-alt="A line chart showing the total debt decreasing over time for both Snowball and Avalanche methods." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBCnODHuAwaeR1i1D1AdDlit6ELlpGRJelYAFSAK_2_maE_dBZwQRUh9vXtF3aluFsmzmqnLkPDe6B6dTHozlmdhCBWe8bbLkK9ZoYZ7QZSe3LCAlSKP17cvsXWF6w53RP4JjRNnv6n-nBTeNkXCigFmRRqERhhDdAAplbYJGAEoav4Uvr3GmgQOmRPKr6_jcKdXKNZuFhWN4N7Tgn8e0vfp5w8eOAU3NpHkRVyPdBhlNAJRfmTb8f9qweu5_EYrMmRO8wTkcCBkedY");'></div>
+</div>
+<div class="flex flex-col gap-4 rounded-xl bg-white/5 dark:bg-[#212121] p-6 shadow-[0_0_4px_rgba(0,0,0,0.1)]">
+<div class="flex flex-col">
+<p class="text-primary text-base font-bold leading-tight">Debt Payoff Timeline</p>
+<p class="text-primary/60 dark:text-[#ababab] text-sm font-normal leading-normal">Visual timeline of when each debt is paid off.</p>
+</div>
+<div class="w-full bg-center bg-no-repeat aspect-video bg-cover rounded-xl" data-alt="A stacked area chart showing individual debts being paid off over time." style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDPdYKAqXVN6vtb1tXNzTnC4y5VnD3bQ7_T436tZd8kscVlx-Yh24zPiTD5kCDV6jeRZfWAHhupaPWw0jrlMao191vOZHPFknrSyyOz2z5aAux9fDDs24WysFy2UJIXnFd3MayF4V-a5puYwU7Mu2bKXUESspj466CPZcCz-UgJlq30HAwJkrwPLOJppfZ2Cf3hEDuEET6g7MHm83mY1dpYURemxgvCC8kROPaSlXDtXNKe33l3tWo2D6LSqgoR8dLovArQy_YD5BCv");'></div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+</body></html>

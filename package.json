@@ -1,0 +1,32 @@
+{
+  "name": "snowball-debt-calculator",
+  "version": "1.0.0",
+  "description": "Single-page debt payoff calculator",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@hookform/resolvers": "^3.3.4",
+    "@supabase/ssr": "^0.1.0",
+    "@supabase/supabase-js": "^2.39.7",
+    "lucide-react": "^0.460.0",
+    "next": "^15.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-hook-form": "^7.51.0",
+    "recharts": "^2.12.0",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.5",
+    "@types/react": "^18.2.48",
+    "@types/react-dom": "^18.2.18",
+    "autoprefixer": "^10.4.17",
+    "postcss": "^8.4.35",
+    "tailwindcss": "^3.4.1",
+    "typescript": "^5.3.3"
+  }
+}
